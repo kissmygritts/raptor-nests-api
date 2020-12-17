@@ -1,7 +1,9 @@
-// const path = require('path')
+const path = require('path')
 const fastify = require('fastify')({ logger: true })
-// const autoload = require('fastify-autoload')
+const autoload = require('fastify-autoload')
+require('dotenv').config()
 
+// fastify plugins
 fastify.register(require('fastify-cors'), {
   origin: '*'
 })
@@ -12,6 +14,11 @@ fastify.register(require('fastify-compress'), {
 
 fastify.get('/', async () => {
   return { api: 'raptor nest api' }
+})
+
+// register routes
+fastify.register(autoload, {
+  dir: path.join(__dirname, 'src/routes')
 })
 
 const start = async () => {
