@@ -9,6 +9,11 @@ class NestRepository {
   async getAll() {
     return this.db.manyOrNone(sql.getAll)
   }
+
+  async getGeobuf() {
+    const geobuf = await this.db.any(sql.getGeobuf)
+    return geobuf[0].geobuf
+  }
 }
 
 module.exports = NestRepository

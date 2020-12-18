@@ -3,7 +3,8 @@ const path = require('path')
 
 module.exports = {
   nests: {
-    getAll: sql('nests/get-all.sql')
+    getAll: sql('nests/get-all.sql'),
+    getGeobuf: sql('nests/get-geobuf.sql')
   }
 }
 
