@@ -1,3 +1,4 @@
 module.exports = {
-  Nests: require('./nests')
+  Nests: require('./nests'),
+  Locations: require('./locations')
 }

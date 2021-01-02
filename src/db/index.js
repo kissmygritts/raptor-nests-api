@@ -1,6 +1,6 @@
 const promise = require('bluebird')
 const pgPromise = require('pg-promise')
-const { Nests } = require('./repos')
+const { Nests, Locations } = require('./repos')
 
 const connection = process.env.DBURI
 const initOptions = {
@@ -8,6 +8,7 @@ const initOptions = {
 
   extend(obj) {
     obj.nests = new Nests(obj, pgp)
+    obj.locations = new Locations(obj, pgp)
   }
 }
 
