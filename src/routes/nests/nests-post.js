@@ -1,94 +1,87 @@
-const { db } = require('../../db')
+const { db, pgp } = require('../../db')
+const {
+  nestBodySchema,
+  nestResponseSchema
+} = require('../../schemas/nest-schema.js')
 
 // schema components
-const body = {
-  type: 'object',
-  required: ['nest_substrate', 'nest_type'],
-  additionalProperties: false,
-  properties: {
-    id: { type: 'string' },
-    habitat_category: {
-      type: 'string',
-      enum: [
-        'agriculture',
-        'canyon',
-        'creosote scrub',
-        'desert scrub',
-        'desert wash',
-        'developed - other',
-        'grassland',
-        'joshua tree',
-        'mixed conifer',
-        'pinyon and/or juniper',
-        'riparian - aspen',
-        'riparian - other',
-        'sagebrush',
-        'salt',
-        'shoreline'
-      ]
-    },
-    habitat_description: { type: 'string' },
-    location_description: { type: 'string' },
-    nest_type: {
-      type: 'string',
-      enum: ['burrow', 'cavity', 'scrape', 'stick nest']
-    },
-    nest_substrate: {
-      type: 'string',
-      enum: [
-        'artificial',
-        'cliff',
-        'ground - subterranean',
-        'ground - surface',
-        'outcrop',
-        'shrub',
-        'tree'
-      ]
-    },
-    probable_origin: {
-      type: 'string',
-      enum: [
-        'accipter',
-        'accipter/buteo',
-        'burrowing owl',
-        'buteo',
-        'buteo/corvid',
-        'corvid',
-        'eagle',
-        'eagle/buteo',
-        'falcon',
-        'ferruginous hawk',
-        'northern goshawk',
-        'osprey',
-        'other'
-      ]
-    },
-    nest_comments: { type: 'string' }
-  }
+const body = nestBodySchema
+const response = nestResponseSchema
+
+// convert xy (latlng) to geom
+const xyToGeom = ({ lat, lng }) => {
+  return `SRID=4326; POINT(${lng} ${lat})`
 }
 
-const response = {
-  200: {
-    type: 'object',
-    properties: {
-      id: { type: 'string' },
-      habitat_category: { type: 'string' },
-      habitat_description: { type: 'string' },
-      location_description: { type: 'string' },
-      nest_type: { type: 'string' },
-      nest_substrate: { type: 'string' },
-      probable_origin: { type: 'string' },
-      nest_commetns: { type: 'string' },
-      created_by: { type: 'string' },
-      created_at: { type: 'string' }
+// parse body
+const parseBody = (body) => {
+  const {
+    id,
+    habitat_category,
+    habitat_description,
+    nest_type,
+    nest_substrate,
+    probable_origin,
+    nest_comments
+  } = body
+  const nest = {
+    id,
+    habitat_category,
+    habitat_description,
+    nest_type,
+    nest_substrate,
+    probable_origin,
+    nest_comments
+  }
+
+  // parse location props
+  const location = body.location
+  const { lat, lng, ...locationProps } = location
+
+  const geom = xyToGeom({ lat, lng })
+
+  return {
+    nest,
+    location: {
+      ...locationProps,
+      geom
     }
   }
 }
 
+// generate insert statements
+const insert = ({ nest, location }) => {
+  const insert = pgp.helpers.insert
+
+  const nestSql = `${insert(nest, null, 'nests')} returning *`
+  const locationSql = `${insert(location, null, 'locations')} returning *`
+
+  return {
+    nestSql,
+    locationSql
+  }
+}
+
+const runInsert = async ({ nest, location }) => {
+  const { nestSql, locationSql } = insert({ nest, location })
+
+  return db.tx(async (t) => {
+    const nest = await t.oneOrNone(nestSql)
+    const location = await t.oneOrNone(locationSql)
+
+    return {
+      ...nest,
+      location: location
+    }
+  })
+}
+
 async function handler(req) {
   const { body } = req
-  console.log(JSON.stringify({ body }))
-  return db.nests.create(body)
+  const { nest, location } = parseBody(body)
+
+  const result = await runInsert({ nest, location })
+  return result
 }
 
 module.exports = {

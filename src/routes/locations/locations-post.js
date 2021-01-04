@@ -1,38 +1,8 @@
 const { db } = require('../../db')
+const schema = require('../../schemas/location-schema.js')
 
-const body = {
-  type: 'object',
-  required: ['nest_id', 'lng', 'lat', 'exact_coordinates', 'current_location'],
-  additionalProperties: false,
-  properties: {
-    id: { type: 'string' },
-    nest_id: { type: 'string' },
-    exact_coordinates: { type: 'boolean' },
-    current_location: { type: 'boolean' },
-    direction: { type: 'string' },
-    distance: { type: 'number' },
-    lng: { type: 'number' },
-    lat: { type: 'number' }
-  }
-}
-
-const response = {
-  200: {
-    type: 'object',
-    properties: {
-      id: { type: 'string' },
-      nest_id: { type: 'string' },
-      exact_coordinates: { type: 'boolean' },
-      current_location: { type: 'boolean' },
-      direction: { type: 'string' },
-      distance: { type: 'number' },
-      // x: { type: 'number' },
-      // y: { type: 'number' },
-      created_by: { type: 'string' },
-      created_at: { type: 'string' }
-    }
-  }
-}
+const body = schema.locationBodySchema
+const response = schema.locationResponseSchema
 
 async function handler(req) {
   const { body } = req
