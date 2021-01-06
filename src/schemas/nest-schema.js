@@ -1,4 +1,5 @@
 const { locationBodySchema } = require('./location-schema.js')
+const { nestVisitBodySchema } = require('./nest-visits-schema.js')
 
 const nestBodySchema = {
   type: 'object',
@@ -9,6 +10,7 @@ const nestBodySchema = {
     habitat_category: {
       type: 'string',
       enum: [
+        '',
         'agriculture',
         'canyon',
         'creosote scrub',
@@ -47,6 +49,7 @@ const nestBodySchema = {
     probable_origin: {
       type: 'string',
       enum: [
+        '',
         'accipter',
         'accipter/buteo',
         'burrowing owl',
@@ -63,7 +66,8 @@ const nestBodySchema = {
       ]
     },
     nest_comments: { type: 'string' },
-    location: locationBodySchema
+    location: locationBodySchema,
+    visit: nestVisitBodySchema
   }
 }
 
@@ -92,6 +96,31 @@ const nestResponseSchema = {
           distance: { type: 'number' },
           created_by: { type: 'string' },
           created_at: { type: 'string' }
+        }
+      },
+      visit: {
+        type: 'object',
+        properties: {
+          id: { type: 'string' },
+          nest_id: { type: 'string' },
+          location_id: { type: 'string' },
+          visit_date: { type: 'string' },
+          observers: { type: 'string' },
+          agency: { type: 'string' },
+          survey_type: { type: 'string' },
+          source: { type: 'string' },
+          nest_condition: { type: 'string' },
+          nest_size: { type: 'string' },
+          decorations: { type: 'boolean' },
+          occupied: { type: 'boolean' },
+          species: { type: 'string' },
+          breeding_stage: { type: 'string' },
+          adult_count: { type: 'number' },
+          adult_behavior: { type: 'string' },
+          production_count: { type: 'number' },
+          young_stage: { type: 'string' },
+          production_notes: { type: 'string' },
+          comments: { type: 'string' }
         }
       }
     }

@@ -1,4 +1,5 @@
 const { db, pgp } = require('../../db')
+const { nullifyEmptyProps } = require('../../utils')
 const {
   nestBodySchema,
   nestResponseSchema
@@ -15,6 +16,7 @@ const xyToGeom = ({ lat, lng }) => {
 
 // parse body
 const parseBody = (body) => {
+  // parse nest props
   const {
     id,
     habitat_category,
@@ -35,52 +37,62 @@ const parseBody = (body) => {
   }
 
   // parse location props
-  const location = body.location
-  const { lat, lng, ...locationProps } = location
-
+  const locationObj = body.location
+  const { lat, lng, ...locationProps } = locationObj
   const geom = xyToGeom({ lat, lng })
+  const location = { ...locationProps, geom }
+
+  // parse nest visit props
+  const nestVisit = body.visit
 
   return {
-    nest,
-    location: {
-      ...locationProps,
-      geom
-    }
+    nest: nullifyEmptyProps(nest),
+    location: nullifyEmptyProps(location),
+    visit: nullifyEmptyProps(nestVisit)
   }
 }
 
 // generate insert statements
-const insert = ({ nest, location }) => {
+const insert = ({ nest, location, visit }) => {
   const insert = pgp.helpers.insert
 
   const nestSql = `${insert(nest, null, 'nests')} returning *`
   const locationSql = `${insert(location, null, 'locations')} returning *`
+  const visitSql = `${insert(visit, null, 'nest_visits')} returning *`
 
   return {
     nestSql,
-    locationSql
+    locationSql,
+    visitSql
   }
 }
 
-const runInsert = async ({ nest, location }) => {
-  const { nestSql, locationSql } = insert({ nest, location })
+const runInsert = async ({ nest, location, visit }) => {
+  const { nestSql, locationSql, visitSql } = insert({ nest, location, visit })
 
   return db.tx(async (t) => {
-    const nest = await t.oneOrNone(nestSql)
-    const location = await t.oneOrNone(locationSql)
+    const nest = t.oneOrNone(nestSql)
+    const location = t.oneOrNone(locationSql)
+    const visit = t.oneOrNone(visitSql)
 
-    return {
-      ...nest,
-      location: location
+    const result = await Promise.all([nest, location, visit])
+    const data = {
+      ...result[0],
+      location: result[1],
+      visit: result[2]
     }
+
+    console.log(JSON.stringify({ data }))
+
+    return data
   })
 }
 
 async function handler(req) {
   const { body } = req
-  const { nest, location } = parseBody(body)
+  const { nest, location, visit } = parseBody(body)
 
-  const result = await runInsert({ nest, location })
+  const result = await runInsert({ nest, location, visit })
   return result
 }
 

@@ -1,6 +1,13 @@
 const locationBodySchema = {
   type: 'object',
-  required: ['nest_id', 'lng', 'lat', 'exact_coordinates', 'current_location'],
+  required: [
+    'id',
+    'nest_id',
+    'lng',
+    'lat',
+    'exact_coordinates',
+    'current_location'
+  ],
   additionalProperties: false,
   properties: {
     id: { type: 'string' },
