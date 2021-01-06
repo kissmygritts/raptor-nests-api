@@ -1,4 +1,5 @@
 const { db } = require('../../../db')
+const { createVisitHandler } = require('./postVisit.js')
 
 const getNestByIdQuery = async ({ id }) => {
   const query = 'select * from nests_by_id where id = $/id/'
@@ -14,6 +15,7 @@ async function handler(req) {
 
 module.exports = function (fastify, opts, next) {
   fastify.get('/nests/:id', {}, handler)
+  fastify.post('/nests/:id/new', {}, createVisitHandler)
 
   next()
 }
