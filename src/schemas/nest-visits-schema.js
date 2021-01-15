@@ -81,9 +81,23 @@ const nestVisitBodySchema = {
         'territorial birds - stage unclear'
       ]
     },
-    adult_count: { type: 'number' },
+    adult_count_clarify: {
+      type: 'string',
+      enum: ['', '=', '>']
+    },
+    adult_count: {
+      type: 'integer',
+      minimum: 0
+    },
     adult_behavior: { type: 'string' },
-    production_count: { type: 'number' },
+    production_count_clarify: {
+      type: 'string',
+      enum: ['', '=', '>']
+    },
+    production_count: {
+      type: 'integer',
+      minimum: 0
+    },
     young_stage: {
       type: 'string',
       enum: [
