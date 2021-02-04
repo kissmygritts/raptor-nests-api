@@ -1,71 +1,75 @@
 const { locationBodySchema } = require('./location-schema.js')
 const { nestVisitBodySchema } = require('./nest-visits-schema.js')
 
+const nestProps = {
+  id: { type: 'string' },
+  habitat_category: {
+    type: 'string',
+    enum: [
+      '',
+      'agriculture',
+      'canyon',
+      'creosote scrub',
+      'desert scrub',
+      'desert wash',
+      'developed - other',
+      'grassland',
+      'joshua tree',
+      'mixed conifer',
+      'pinyon and/or juniper',
+      'riparian - aspen',
+      'riparian - other',
+      'sagebrush',
+      'salt',
+      'shoreline'
+    ]
+  },
+  habitat_description: { type: 'string' },
+  location_description: { type: 'string' },
+  nest_type: {
+    type: 'string',
+    enum: ['burrow', 'cavity', 'scrape', 'stick nest']
+  },
+  nest_substrate: {
+    type: 'string',
+    enum: [
+      'artificial',
+      'cliff',
+      'ground - subterranean',
+      'ground - surface',
+      'outcrop',
+      'shrub',
+      'tree'
+    ]
+  },
+  probable_origin: {
+    type: 'string',
+    enum: [
+      '',
+      'accipter',
+      'accipter/buteo',
+      'burrowing owl',
+      'buteo',
+      'buteo/corvid',
+      'corvid',
+      'eagle',
+      'eagle/buteo',
+      'falcon',
+      'ferruginous hawk',
+      'northern goshawk',
+      'osprey',
+      'other'
+    ]
+  },
+  nest_comments: { type: 'string' }
+}
+
 const nestBodySchema = {
   type: 'object',
   required: ['nest_substrate', 'nest_type'],
   additionalProperties: false,
   properties: {
-    id: { type: 'string' },
-    habitat_category: {
-      type: 'string',
-      enum: [
-        '',
-        'agriculture',
-        'canyon',
-        'creosote scrub',
-        'desert scrub',
-        'desert wash',
-        'developed - other',
-        'grassland',
-        'joshua tree',
-        'mixed conifer',
-        'pinyon and/or juniper',
-        'riparian - aspen',
-        'riparian - other',
-        'sagebrush',
-        'salt',
-        'shoreline'
-      ]
-    },
-    habitat_description: { type: 'string' },
-    location_description: { type: 'string' },
-    nest_type: {
-      type: 'string',
-      enum: ['burrow', 'cavity', 'scrape', 'stick nest']
-    },
-    nest_substrate: {
-      type: 'string',
-      enum: [
-        'artificial',
-        'cliff',
-        'ground - subterranean',
-        'ground - surface',
-        'outcrop',
-        'shrub',
-        'tree'
-      ]
-    },
-    probable_origin: {
-      type: 'string',
-      enum: [
-        '',
-        'accipter',
-        'accipter/buteo',
-        'burrowing owl',
-        'buteo',
-        'buteo/corvid',
-        'corvid',
-        'eagle',
-        'eagle/buteo',
-        'falcon',
-        'ferruginous hawk',
-        'northern goshawk',
-        'osprey',
-        'other'
-      ]
-    },
-    nest_comments: { type: 'string' },
+    ...nestProps,
     location: locationBodySchema,
     visit: nestVisitBodySchema
   }
@@ -82,7 +86,7 @@ const nestResponseSchema = {
       nest_type: { type: 'string' },
       nest_substrate: { type: 'string' },
       probable_origin: { type: 'string' },
-      nest_commetns: { type: 'string' },
+      nest_comments: { type: 'string' },
       created_by: { type: 'string' },
       created_at: { type: 'string' },
       location: {
@@ -128,6 +132,7 @@ const nestResponseSchema = {
 }
 
 module.exports = {
+  nestProps,
   nestBodySchema,
   nestResponseSchema
 }

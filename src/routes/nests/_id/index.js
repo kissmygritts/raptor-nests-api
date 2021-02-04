@@ -1,5 +1,5 @@
 const { db } = require('../../../db')
-const { createVisitHandler } = require('./postVisit.js')
+const { createVisitHandler } = require('./post-visit.js')
 
 const getNestByIdQuery = async ({ id }) => {
   const query = 'select * from nests_by_id where id = $/id/'
