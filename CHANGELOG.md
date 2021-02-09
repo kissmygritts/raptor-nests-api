@@ -10,6 +10,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Remove `POST /nests/:id/new` route
 - Add `GET /nests/feed` route(?)
 
+## [0.2.2] - 2021-02-09
+
+### Fixed
+
+- `location_details` was excluded from the nest props which caused a nest to be entered
+  into the database without it.
+
 ## [0.2.1] - 2021-02-08
 
 ### Changed
