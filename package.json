@@ -1,6 +1,6 @@
 {
   "name": "raptor-nests-api",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "An API layer for the raptor nest application",
   "main": "server.js",
   "scripts": {
