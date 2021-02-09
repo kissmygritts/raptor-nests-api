@@ -1,5 +1,6 @@
 const { db, pgp } = require('../../db')
 const { nestVisitProps } = require('../../schemas/nest-visits-schema.js')
+const { locationProps } = require('../../schemas/location-schema.js')
 const { nullifyEmptyProps } = require('../../utils')
 
 // Schema
@@ -12,8 +13,36 @@ const params = {
 
 const body = {
   type: 'object',
-  properties: nestVisitProps,
-  additionalProperties: false
+  additionalProperties: false,
+  properties: {
+    visit: {
+      type: 'object',
+      additionalProperties: false,
+      required: [
+        'id',
+        'nest_id',
+        'location_id',
+        'visit_date',
+        'observers',
+        'survey_type',
+        'occupied'
+      ],
+      properties: nestVisitProps
+    },
+    location: {
+      type: 'object',
+      additionalProperties: false,
+      required: [
+        'id',
+        'nest_id',
+        'lng',
+        'lat',
+        'exact_coordinates',
+        'current_location'
+      ],
+      properties: locationProps
+    }
+  }
 }
 
 const schema = {
@@ -22,28 +51,84 @@ const schema = {
 }
 
 // Helper functions
-const parseBody = ({ body }) => {
-  const data = nullifyEmptyProps(body)
-
-  console.log(JSON.stringify({ data }))
-  return data
+const xyToGeom = ({ lat, lng }) => {
+  return `SRID=4326; POINT(${lng} ${lat})`
 }
 
-const insert = ({ visit }) => {
+const genVisitQuery = ({ visit }) => {
   const insert = pgp.helpers.insert
-  const visitSql = `${insert(visit, null, 'nest_visits')} returning *`
-  return visitSql
+  const sql = insert(visit, null, 'nest_visits')
+  return sql
 }
 
-const runInsert = async ({ visit }) => {
-  const visitSql = insert({ visit })
-  return db.oneOrNone(visitSql)
+const genLocationQuery = ({ location }) => {
+  const { insert, concat } = pgp.helpers
+  const format = pgp.as.format
+
+  const { lat, lng, ...locationProps } = location
+  const geom = xyToGeom({ lat, lng })
+
+  let sql = insert(
+    {
+      ...locationProps,
+      geom
+    },
+    null,
+    'locations'
+  )
+
+  if (location.current_location) {
+    const update = format(
+      'update locations set current_location = false where nest_id = $/nestId/',
+      { nestId: location.nest_id }
+    )
+
+    sql = concat([update, sql])
+  }
+
+  return sql
+}
+
+const runQuery = async ({ visit, location }) => {
+  const visitSql = genVisitQuery({ visit })
+
+  if (!location) {
+    console.log(JSON.stringify({ msg: 'running visit insert only' }))
+    const result = await db.oneOrNone(`${visitSql} returning *`)
+
+    return result
+  } else {
+    console.log(JSON.stringify({ msg: 'running transaction' }))
+    const locationSql = genLocationQuery({ location })
+
+    const result = await db.tx(async (t) => {
+      const locationQuery = t.oneOrNone(locationSql + 'returning *')
+      const visitQuery = t.oneOrNone(visitSql + 'returning *')
+
+      const result = await Promise.all([locationQuery, visitQuery])
+      const data = {
+        visit: result[1],
+        location: result[0]
+      }
+
+      return data
+    })
+
+    return result
+  }
 }
 
 // Handler function
 const handler = async (req) => {
-  const data = parseBody(req)
-  const result = await runInsert({ visit: data })
+  let { visit, location } = req.body
+
+  visit = nullifyEmptyProps(visit)
+  location = location ? nullifyEmptyProps(location) : null
+
+  console.log(JSON.stringify({ visit, location }))
+
+  const result = await runQuery({ visit, location })
+
   return result
 }
 
