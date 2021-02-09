@@ -12,7 +12,16 @@ const locationBodySchema = {
   properties: {
     id: { type: 'string' },
     nest_id: { type: 'string' },
-    exact_coordinates: { type: 'boolean' },
+    exact_coordinates: {
+      type: 'string',
+      enum: [
+        '',
+        'actual nest',
+        'observation location',
+        'estimated nest location',
+        'not noted'
+      ]
+    },
     current_location: { type: 'boolean' },
     direction: { type: 'string' },
     distance: { type: 'number' },
@@ -27,7 +36,7 @@ const locationResponseSchema = {
     properties: {
       id: { type: 'string' },
       nest_id: { type: 'string' },
-      exact_coordinates: { type: 'boolean' },
+      exact_coordinates: { type: 'string' },
       current_location: { type: 'boolean' },
       direction: { type: 'string' },
       distance: { type: 'number' },

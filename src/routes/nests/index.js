@@ -7,11 +7,20 @@ const {
   schema: editNestSchema,
   handler: editNestHandler
 } = require('./nests-edit.js')
+const {
+  schema: createNestVisitSchema,
+  handler: createNestVisitHandler
+} = require('./create-nest-visit.js')
 
 module.exports = function (fastify, opts, next) {
   fastify.get('/nests', { schema: getAllSchema }, getAllHandler)
   fastify.post('/nests', { schema: postNestSchema }, postNestHandler)
   fastify.put('/nests/:nestId', { schema: editNestSchema }, editNestHandler)
+  fastify.post(
+    '/nests/:nestId/visits',
+    { schema: createNestVisitSchema },
+    createNestVisitHandler
+  )
 
   next()
 }
