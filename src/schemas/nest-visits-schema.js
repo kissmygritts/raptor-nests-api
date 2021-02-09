@@ -13,6 +13,7 @@ const nestVisitProps = {
       'ground - incidental',
       'ground - passive',
       'ground - broadcast',
+      'ground - unspecified',
       'not noted'
     ]
   },
@@ -72,7 +73,7 @@ const nestVisitProps = {
   },
   adult_count_clarify: {
     type: 'string',
-    enum: ['', '=', '>']
+    enum: ['', '=', '>=']
   },
   adult_count: {
     type: 'integer',
@@ -81,7 +82,7 @@ const nestVisitProps = {
   adult_behavior: { type: 'string' },
   production_count_clarify: {
     type: 'string',
-    enum: ['', '=', '>']
+    enum: ['', '=', '>=']
   },
   production_count: {
     type: 'integer',

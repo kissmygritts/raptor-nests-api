@@ -1,3 +1,23 @@
+const locationProps = {
+  id: { type: 'string' },
+  nest_id: { type: 'string' },
+  exact_coordinates: {
+    type: 'string',
+    enum: [
+      '',
+      'actual nest',
+      'observation location',
+      'estimated location',
+      'not noted'
+    ]
+  },
+  current_location: { type: 'boolean' },
+  direction: { type: 'string' },
+  distance: { type: 'number' },
+  lng: { type: 'number' },
+  lat: { type: 'number' }
+}
+
 const locationBodySchema = {
   type: 'object',
   required: [
@@ -9,25 +29,7 @@ const locationBodySchema = {
     'current_location'
   ],
   additionalProperties: false,
-  properties: {
-    id: { type: 'string' },
-    nest_id: { type: 'string' },
-    exact_coordinates: {
-      type: 'string',
-      enum: [
-        '',
-        'actual nest',
-        'observation location',
-        'estimated nest location',
-        'not noted'
-      ]
-    },
-    current_location: { type: 'boolean' },
-    direction: { type: 'string' },
-    distance: { type: 'number' },
-    lng: { type: 'number' },
-    lat: { type: 'number' }
-  }
+  properties: locationProps
 }
 
 const locationResponseSchema = {
@@ -47,6 +49,7 @@ const locationResponseSchema = {
 }
 
 module.exports = {
+  locationProps,
   locationBodySchema,
   locationResponseSchema
 }
