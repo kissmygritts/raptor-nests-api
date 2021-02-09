@@ -10,19 +10,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Remove `POST /nests/:id/new` route
 - Add `GET /nests/feed` route(?)
 
+## [0.2.1] - 2021-02-08
+
+### Changed
+
+- Update schema to match front-end
+- Create nest visit route now accepts and handles updated nest locations
+  - rewrote the handler for `POST /nest/:id/visit` to deal with the fact that
+    adding additional nest visits can change the nest locations. Still works
+    without a location prop.
+
 ## [0.2.0] - 2021-02-08
 
-## Added
+### Added
 
 - POST nest visit takes location and visit data props
 - Edit nest details. Send request to `PUT /nests/:id`
 
-## Changed
+### Changed
 
 - Add `>` and `=` to clarify adult, production counts
 - `location.exact_coordinates` changed from boolean to string type
 
-## Deprecated
+### Deprecated
 
 - `POST /nests/:id/new` will be removed in next release. Use `POST /nests/:id/visit`
 
