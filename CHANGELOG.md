@@ -10,6 +10,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Remove `POST /nests/:id/new` route
 - Add `GET /nests/feed` route(?)
 
+## [0.2.3] - 2021-02-10
+
+### Changed
+
+- Update JSON Schema `enums` to match frontend
+
 ## [0.2.2] - 2021-02-09
 
 ### Fixed
@@ -41,7 +47,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Deprecated
 
-- `POST /nests/:id/new` will be removed in next release. Use `POST /nests/:id/visit`
+- `POST /nests/:id/new` will be removed in a future release. Use `POST /nests/:id/visit`
 
 ## [0.1.1] - 2021-01-04
 

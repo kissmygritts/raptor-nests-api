@@ -10,7 +10,6 @@ const nestProps = {
       'agriculture',
       'canyon',
       'creosote scrub',
-      'desert scrub',
       'desert wash',
       'developed - other',
       'grassland',
@@ -19,9 +18,10 @@ const nestProps = {
       'pinyon and/or juniper',
       'riparian - aspen',
       'riparian - other',
+      'salt desert scrub',
+      'shoreline',
       'sagebrush',
-      'salt',
-      'shoreline'
+      'other'
     ]
   },
   habitat_description: { type: 'string' },

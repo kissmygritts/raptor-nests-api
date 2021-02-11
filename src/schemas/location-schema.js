@@ -6,13 +6,16 @@ const locationProps = {
     enum: [
       '',
       'actual nest',
-      'observation location',
       'estimated location',
+      'observation location',
       'not noted'
     ]
   },
   current_location: { type: 'boolean' },
-  direction: { type: 'string' },
+  direction: {
+    type: 'string',
+    enum: ['', 'nw', 'n', 'ne', 'e', 'se', 's', 'sw', 'w']
+  },
   distance: { type: 'number' },
   lng: { type: 'number' },
   lat: { type: 'number' }

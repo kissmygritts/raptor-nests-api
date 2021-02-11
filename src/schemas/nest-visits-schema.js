@@ -4,7 +4,22 @@ const nestVisitProps = {
   location_id: { type: 'string' },
   visit_date: { type: 'string' },
   observers: { type: 'string' },
-  agency: { type: 'string' },
+  agency: {
+    type: 'string',
+    enum: [
+      '',
+      'nevada dept. of wildlife',
+      'nevada natural heritage program',
+      'state (and other) parks',
+      'bureau of land management',
+      'national park service',
+      'US army corps of engineers',
+      'US fish & wildlife service',
+      'US forest service',
+      'US geological survey',
+      'other'
+    ]
+  },
   survey_type: {
     type: 'string',
     enum: [
@@ -62,13 +77,13 @@ const nestVisitProps = {
     enum: [
       '',
       'courtship',
-      'failed',
-      'fledged',
       'incubation',
       'incubation/brooding - stage unclear',
       'nestling',
+      'fledged',
       'territorial birds - stage unclear',
-      'stage unclear'
+      'stage unclear',
+      'failed'
     ]
   },
   adult_count_clarify: {
@@ -92,11 +107,11 @@ const nestVisitProps = {
     type: 'string',
     enum: [
       '',
-      'branchers',
-      'eggs or nestlings',
       'eggs',
-      'fledglings',
-      'nestlings'
+      'eggs or nestlings',
+      'nestlings',
+      'branchers',
+      'fledglings'
     ]
   },
   production_notes: { type: 'string' },
