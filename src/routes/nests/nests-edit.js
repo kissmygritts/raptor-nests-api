@@ -9,8 +9,6 @@ const nestPropsMinusEnums = Object.keys(nestProps).reduce(
   {}
 )
 
-console.log(JSON.stringify({ schema: nestPropsMinusEnums }))
-
 // Request body schema
 const bodySchema = {
   type: 'object',

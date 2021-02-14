@@ -1,4 +1,13 @@
-const locationProps = {
+const required = [
+  'id',
+  'nest_id',
+  'lng',
+  'lat',
+  'exact_coordinates',
+  'current_location'
+]
+
+const sharedProps = {
   id: { type: 'string' },
   nest_id: { type: 'string' },
   exact_coordinates: {
@@ -16,43 +25,37 @@ const locationProps = {
     type: 'string',
     enum: ['', 'nw', 'n', 'ne', 'e', 'se', 's', 'sw', 'w']
   },
-  distance: { type: 'number' },
+  distance: { type: 'number' }
+}
+
+const bodyProps = {
+  ...sharedProps,
   lng: { type: 'number' },
   lat: { type: 'number' }
 }
 
+const responseProps = {
+  ...sharedProps,
+  geom: { type: 'string' }
+}
+
 const locationBodySchema = {
   type: 'object',
-  required: [
-    'id',
-    'nest_id',
-    'lng',
-    'lat',
-    'exact_coordinates',
-    'current_location'
-  ],
+  required: required,
   additionalProperties: false,
-  properties: locationProps
+  properties: bodyProps
 }
 
 const locationResponseSchema = {
   200: {
     type: 'object',
-    properties: {
-      id: { type: 'string' },
-      nest_id: { type: 'string' },
-      exact_coordinates: { type: 'string' },
-      current_location: { type: 'boolean' },
-      direction: { type: 'string' },
-      distance: { type: 'number' },
-      created_by: { type: 'string' },
-      created_at: { type: 'string' }
-    }
+    properties: responseProps
   }
 }
 
 module.exports = {
-  locationProps,
+  bodyProps,
+  responseProps,
   locationBodySchema,
   locationResponseSchema
 }

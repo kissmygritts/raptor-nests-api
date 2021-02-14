@@ -46,8 +46,8 @@ const nestProps = {
     type: 'string',
     enum: [
       '',
-      'accipter',
-      'accipter/buteo',
+      'accipiter',
+      'accipiter/buteo',
       'burrowing owl',
       'buteo',
       'buteo/corvid',

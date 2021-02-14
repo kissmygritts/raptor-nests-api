@@ -10,6 +10,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Remove `POST /nests/:id/new` route
 - Add `GET /nests/feed` route(?)
 
+## [0.3.0] - 2021-02-13
+
+### Added
+
+- Routes for batch uploading data to the database. This will be useful for scripting bulk uploads.
+  - `/:table/batch` is the route for each table: `nests`, `nest-visits`, `locations`
+- Utility functions to help with the batch inserts
+- Location schema broken into `body`, `response`, `sharedProps` to better compose schemas. This addition is more flexible for composing the different schemas. Looking into changing all schema to this format.
+
+###
+
 ## [0.2.3] - 2021-02-10
 
 ### Changed

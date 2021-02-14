@@ -1,13 +1,10 @@
-const {
-  schema: postLocationsSchema,
-  handler: postLocationsHandler
-} = require('./locations-post.js')
+const batchCreateLocations = require('./batch-create-locations')
 
 module.exports = function (fastify, opts, next) {
   fastify.post(
-    '/locations',
-    { schema: postLocationsSchema },
-    postLocationsHandler
+    '/locations/batch',
+    { schema: batchCreateLocations.schema },
+    batchCreateLocations.handler
   )
 
   next()
