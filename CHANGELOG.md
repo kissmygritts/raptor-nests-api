@@ -10,6 +10,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Remove `POST /nests/:id/new` route
 - Add `GET /nests/feed` route(?)
 
+## [0.4.0] - 20210-02-14
+
+## Added
+
+- Authentication routes
+  - `/register` to create a new user
+  - `/login` to sign in as an existing user
+  - By default existing users are unverified. This must be done manually to ensure data isn't exposed to unverified users. Right now verified users are NDOW biologists
+- All routes have a `preValidated` lifecycle method that requires a `Authorization` header with a JWT.
+  - except `/login` and `/register`
+
 ## [0.3.0] - 2021-02-13
 
 ### Added
@@ -18,8 +29,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - `/:table/batch` is the route for each table: `nests`, `nest-visits`, `locations`
 - Utility functions to help with the batch inserts
 - Location schema broken into `body`, `response`, `sharedProps` to better compose schemas. This addition is more flexible for composing the different schemas. Looking into changing all schema to this format.
-
-###
 
 ## [0.2.3] - 2021-02-10
 
