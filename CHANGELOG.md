@@ -10,7 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Remove `POST /nests/:id/new` route
 - Add `GET /nests/feed` route(?)
 
-## [0.4.0] - 20210-02-14
+## [0.4.0] - 20210-02-16
 
 ## Added
 
@@ -20,6 +20,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - By default existing users are unverified. This must be done manually to ensure data isn't exposed to unverified users. Right now verified users are NDOW biologists
 - All routes have a `preValidated` lifecycle method that requires a `Authorization` header with a JWT.
   - except `/login` and `/register`
+
+## Fixed
+
+- Changes to the location schema in v 0.3.0 caused an error when creating the geom on `PUT /nests/:nestid/visits`. I fixed this.
 
 ## [0.3.0] - 2021-02-13
 
