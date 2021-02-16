@@ -1,6 +1,6 @@
 const { db, pgp } = require('../../db')
-const { nestVisitProps } = require('../../schemas/nest-visits-schema.js')
-const { locationProps } = require('../../schemas/location-schema.js')
+const visitSchema = require('../../schemas/nest-visits-schema.js')
+const locationSchema = require('../../schemas/location-schema.js')
 const { nullifyEmptyProps } = require('../../utils')
 
 // Schema
@@ -11,37 +11,12 @@ const params = {
   }
 }
 
+// construct body schema
 const body = {
   type: 'object',
-  additionalProperties: false,
   properties: {
-    visit: {
-      type: 'object',
-      additionalProperties: false,
-      required: [
-        'id',
-        'nest_id',
-        'location_id',
-        'visit_date',
-        'observers',
-        'survey_type',
-        'occupied'
-      ],
-      properties: nestVisitProps
-    },
-    location: {
-      type: 'object',
-      additionalProperties: false,
-      required: [
-        'id',
-        'nest_id',
-        'lng',
-        'lat',
-        'exact_coordinates',
-        'current_location'
-      ],
-      properties: locationProps
-    }
+    visit: visitSchema.nestVisitBodySchema,
+    location: locationSchema.locationBodySchema
   }
 }
 
@@ -67,6 +42,8 @@ const genLocationQuery = ({ location }) => {
 
   const { lat, lng, ...locationProps } = location
   const geom = xyToGeom({ lat, lng })
+
+  console.log(JSON.stringify({ geom }))
 
   let sql = insert(
     {
@@ -124,9 +101,6 @@ const handler = async (req) => {
 
   visit = nullifyEmptyProps(visit)
   location = location ? nullifyEmptyProps(location) : null
-
-  console.log(JSON.stringify({ visit, location }))
-
   const result = await runQuery({ visit, location })
 
   return result
