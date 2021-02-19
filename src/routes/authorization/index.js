@@ -29,7 +29,7 @@ async function register(req) {
   return { token }
 }
 
-async function login(req) {
+async function login(req, reply) {
   const jwt = this.jwt
   const { username, password } = req.body
 
@@ -39,11 +39,14 @@ async function login(req) {
   )
 
   if (!biologist) {
+    reply.code(401)
     return new Error('username or password not found')
+    // return { message: 'username or password not found' }
   }
 
   const passwordIsValid = await hash.isEqual(password, biologist.password)
   if (!passwordIsValid) {
+    reply.code(401)
     return new Error('username or password not found')
   }
 
