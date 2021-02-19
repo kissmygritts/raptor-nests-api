@@ -1,6 +1,6 @@
 const { db, pgp } = require('../../db')
 const { nestVisitProps } = require('../../schemas/nest-visits-schema.js')
-const { locationProps } = require('../../schemas/location-schema.js')
+const { locationBodySchema } = require('../../schemas/location-schema.js')
 const { nullifyEmptyProps } = require('../../utils')
 
 // Schema
@@ -13,7 +13,6 @@ const params = {
 
 const body = {
   type: 'object',
-  additionalProperties: false,
   properties: {
     visit: {
       type: 'object',
@@ -29,21 +28,42 @@ const body = {
       ],
       properties: nestVisitProps
     },
-    location: {
-      type: 'object',
-      additionalProperties: false,
-      required: [
-        'id',
-        'nest_id',
-        'lng',
-        'lat',
-        'exact_coordinates',
-        'current_location'
-      ],
-      properties: locationProps
-    }
+    location: locationBodySchema
   }
 }
+// const body = {
+//   type: 'object',
+//   // additionalProperties: false,
+//   properties: {
+//     visit: {
+//       type: 'object',
+//       additionalProperties: false,
+//       required: [
+//         'id',
+//         'nest_id',
+//         'location_id',
+//         'visit_date',
+//         'observers',
+//         'survey_type',
+//         'occupied'
+//       ],
+//       properties: nestVisitProps
+//     },
+//     location: {
+//       type: 'object',
+//       additionalProperties: false,
+//       required: [
+//         'id',
+//         'nest_id',
+//         'lng',
+//         'lat',
+//         'exact_coordinates',
+//         'current_location'
+//       ],
+//       properties: locationProps
+//     }
+//   }
+// }
 
 const schema = {
   params,
@@ -93,12 +113,12 @@ const runQuery = async ({ visit, location }) => {
   const visitSql = genVisitQuery({ visit })
 
   if (!location) {
-    console.log(JSON.stringify({ msg: 'running visit insert only' }))
+    // console.log(JSON.stringify({ msg: 'running visit insert only' }))
     const result = await db.oneOrNone(`${visitSql} returning *`)
 
     return result
   } else {
-    console.log(JSON.stringify({ msg: 'running transaction' }))
+    // console.log(JSON.stringify({ msg: 'running transaction' }))
     const locationSql = genLocationQuery({ location })
 
     const result = await db.tx(async (t) => {
@@ -124,8 +144,6 @@ const handler = async (req) => {
 
   visit = nullifyEmptyProps(visit)
   location = location ? nullifyEmptyProps(location) : null
-
-  console.log(JSON.stringify({ visit, location }))
 
   const result = await runQuery({ visit, location })
 
