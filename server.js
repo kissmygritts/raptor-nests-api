@@ -13,7 +13,10 @@ fastify.register(require('fastify-compress'), {
 })
 
 // auth plugins
-fastify.register(require('fastify-jwt'), { secret: process.env.JWT_SECRET })
+fastify.register(require('fastify-jwt'), {
+  secret: process.env.JWT_SECRET,
+  sign: { expiresIn: process.env.JWT_EXPIRES_IN }
+})
 
 fastify.register(autoload, {
   dir: path.join(__dirname, 'src/plugins')
