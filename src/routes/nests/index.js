@@ -14,19 +14,44 @@ const {
 const batchCreateNests = require('./batch-create-nests.js')
 
 module.exports = function (fastify, opts, next) {
-  fastify.get('/nests', { schema: getAllSchema }, getAllHandler)
-  fastify.post('/nests', { schema: postNestSchema }, postNestHandler)
-
+  fastify.get(
+    '/nests',
+    {
+      schema: getAllSchema,
+      preValidation: [fastify.authenticate]
+    },
+    getAllHandler
+  )
+  fastify.post(
+    '/nests',
+    {
+      schema: postNestSchema,
+      preValidation: [fastify.authenticate]
+    },
+    postNestHandler
+  )
   fastify.post(
     '/nests/batch',
-    { schema: batchCreateNests.schema },
+    {
+      schema: batchCreateNests.schema,
+      preValidation: [fastify.authenticate]
+    },
     batchCreateNests.handler
   )
-
-  fastify.put('/nests/:nestId', { schema: editNestSchema }, editNestHandler)
+  fastify.put(
+    '/nests/:nestId',
+    {
+      schema: editNestSchema,
+      preValidation: [fastify.authenticate]
+    },
+    editNestHandler
+  )
   fastify.post(
     '/nests/:nestId/visits',
-    { schema: createNestVisitSchema },
+    {
+      schema: createNestVisitSchema,
+      preValidation: [fastify.authenticate]
+    },
     createNestVisitHandler
   )
 

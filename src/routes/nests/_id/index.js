@@ -14,8 +14,20 @@ async function handler(req) {
 }
 
 module.exports = function (fastify, opts, next) {
-  fastify.get('/nests/:id', {}, handler)
-  fastify.post('/nests/:id/new', {}, createVisitHandler)
+  fastify.get(
+    '/nests/:id',
+    {
+      preValidation: [fastify.authenticate]
+    },
+    handler
+  )
+  fastify.post(
+    '/nests/:id/new',
+    {
+      preValidation: [fastify.authenticate]
+    },
+    createVisitHandler
+  )
 
   next()
 }

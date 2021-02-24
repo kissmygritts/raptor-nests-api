@@ -1,22 +1,25 @@
 {
   "name": "raptor-nests-api",
-  "version": "0.3.1",
+  "version": "0.4.0",
   "description": "An API layer for the raptor nest application",
   "main": "server.js",
   "scripts": {
-    "dev": "nodemon server.js",
+    "dev": "PORT=3000 nodemon server.js",
     "dev:jq": "PORT=3000 node server.js | jq"
   },
   "author": "Mitchell Gritts <mitchellgritts@gmail.com> (mitchellgritts.com)",
   "repo": "https://github.com/kissmygritts/raptor-nests-api",
   "license": "ISC",
   "dependencies": {
+    "bcrypt": "^5.0.0",
     "bluebird": "^3.7.2",
     "dotenv": "^8.2.0",
     "fastify": "^3.9.2",
     "fastify-autoload": "^3.3.1",
     "fastify-compress": "^3.4.0",
     "fastify-cors": "^5.1.0",
+    "fastify-jwt": "^2.3.0",
+    "fastify-plugin": "^3.0.0",
     "pg-promise": "^10.8.1"
   },
   "devDependencies": {

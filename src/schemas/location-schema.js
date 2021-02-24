@@ -54,6 +54,7 @@ const locationResponseSchema = {
 }
 
 module.exports = {
+  required,
   bodyProps,
   responseProps,
   locationBodySchema,

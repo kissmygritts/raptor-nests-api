@@ -12,9 +12,25 @@ fastify.register(require('fastify-compress'), {
   encodings: ['gzip', 'deflate']
 })
 
-fastify.get('/', async () => {
-  return { api: 'raptor nest api' }
+// auth plugins
+fastify.register(require('fastify-jwt'), {
+  secret: process.env.JWT_SECRET,
+  sign: { expiresIn: process.env.JWT_EXPIRES_IN }
 })
+
+fastify.register(autoload, {
+  dir: path.join(__dirname, 'src/plugins')
+})
+
+fastify.get(
+  '/',
+  {
+    preValidation: fastify.authenticate
+  },
+  async () => {
+    return { api: 'raptor nest api' }
+  }
+)
 
 // register routes
 fastify.register(autoload, {
