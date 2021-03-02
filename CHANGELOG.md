@@ -10,7 +10,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Remove `POST /nests/:id/new` route
 - Add `GET /nests/feed` route(?)
 
-## [0.4.0] - 20210-02-16
+## [0.4.1] - 2021-03-02
+
+## Fixed
+
+- Enum schemas to match the frontend values
+
+## Removed
+
+- Nest Decorations, not used often enough
+
+## [0.4.0] - 2021-02-16
 
 ## Added
 

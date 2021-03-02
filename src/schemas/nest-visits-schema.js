@@ -8,6 +8,7 @@ const nestVisitProps = {
     type: 'string',
     enum: [
       '',
+      'consultant',
       'nevada dept. of wildlife',
       'nevada natural heritage program',
       'state (and other) parks',
@@ -41,7 +42,7 @@ const nestVisitProps = {
     type: 'string',
     enum: ['', 'small', 'medium', 'large', 'extra large']
   },
-  decorations: { type: 'boolean' },
+  // decorations: { type: 'boolean' },
   occupied: { type: 'boolean' },
   species: {
     type: 'string',
@@ -69,7 +70,8 @@ const nestVisitProps = {
       'sharp-shinned hawk',
       'short-eared owl',
       "swainson's hawk",
-      'western screech owl'
+      'western screech owl',
+      'other'
     ]
   },
   breeding_stage: {
@@ -92,7 +94,7 @@ const nestVisitProps = {
   },
   adult_count: {
     type: 'integer',
-    minimum: 0
+    minimum: -1
   },
   adult_behavior: { type: 'string' },
   production_count_clarify: {
@@ -101,7 +103,7 @@ const nestVisitProps = {
   },
   production_count: {
     type: 'integer',
-    minimum: 0
+    minimum: -1
   },
   young_stage: {
     type: 'string',
