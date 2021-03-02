@@ -62,7 +62,9 @@ const nestProps = {
       'other'
     ]
   },
-  nest_comments: { type: 'string' }
+  nest_comments: { type: 'string' },
+  created_by: { type: 'string' },
+  updated_by: { type: 'string' }
 }
 
 const nestBodySchema = {

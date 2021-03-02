@@ -25,7 +25,8 @@ const parseBody = (body) => {
     nest_type,
     nest_substrate,
     probable_origin,
-    nest_comments
+    nest_comments,
+    created_by
   } = body
   const nest = {
     id,
@@ -35,7 +36,8 @@ const parseBody = (body) => {
     nest_type,
     nest_substrate,
     probable_origin,
-    nest_comments
+    nest_comments,
+    created_by
   }
 
   // parse location props

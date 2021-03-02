@@ -25,7 +25,9 @@ const sharedProps = {
     type: 'string',
     enum: ['', 'nw', 'n', 'ne', 'e', 'se', 's', 'sw', 'w']
   },
-  distance: { type: 'number' }
+  distance: { type: 'number' },
+  created_by: { type: 'string' },
+  updated_by: { type: 'string' }
 }
 
 const bodyProps = {

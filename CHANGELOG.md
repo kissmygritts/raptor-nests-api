@@ -12,6 +12,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.4.1] - 2021-03-02
 
+## Added
+
+- `created_by`, `updated_by` are updated included in the PUT/POST request body
+  - These fields are updated in the database relate ownership of a row in the database
+
 ## Fixed
 
 - Enum schemas to match the frontend values

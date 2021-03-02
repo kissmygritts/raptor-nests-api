@@ -117,7 +117,9 @@ const nestVisitProps = {
     ]
   },
   production_notes: { type: 'string' },
-  comments: { type: 'string' }
+  comments: { type: 'string' },
+  created_by: { type: 'string' },
+  updated_by: { type: 'string' }
 }
 
 const nestVisitBodySchema = {
