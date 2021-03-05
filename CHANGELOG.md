@@ -10,6 +10,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Remove `POST /nests/:id/new` route
 - Add `GET /nests/feed` route(?)
 
+## [0.4.2] - 2021-03-05
+
+### Fixed
+
+- `nests.probable_origin` enum didn't have accipiter/buteo as an option, fixed.
+
 ## [0.4.1] - 2021-03-02
 
 ## Added
